@@ -7,4 +7,7 @@ module.exports = app => {
         .put(app.controllers.user.save)
         .get(app.controllers.user.getById)
     //     .delete(app.app.controllers.user.remove)
+
+    app.route('/upload')
+        .post(app.controllers.podcasts.save)
 }

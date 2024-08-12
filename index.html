@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload de Arquivos</title>
+</head>
+<body>
+  <h1>Envio de Arquivos</h1>
+  <form id="uploadForm">
+    <input type="file" id="mediaFile" name="mediaFile" accept="audio/*,video/*" required>
+    <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evita o envio padrão do formulário
+
+      const formData = new FormData();
+      const mediaFile = document.getElementById('mediaFile').files[0];
+      const imageFile = document.getElementById('imageFile').files[0];
+
+      if (mediaFile) {
+        formData.append('mediaFile', mediaFile);
+      }
+      if (imageFile) {
+        formData.append('imageFile', imageFile);
+      }
+
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(result => {
+        console.log('Success:', result);
+        alert('Upload realizado com sucesso!');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Erro ao fazer upload dos arquivos.');
+      });
+    });
+  </script>
+</body>
+</html>

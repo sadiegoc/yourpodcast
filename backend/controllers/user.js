@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 
 module.exports = app => {
     // funções úteis de validação de variáveis
-    const { existsOrError, notExistsOrError, equalsOrError } = app.config.validation
+    const { existsOrError, notExistsOrError, equalsOrError } = app.controllers.validation
     
     // função para aplicar codificação hash na senha antes de salvar no banco de dados
     const encryptPassword = password => {
