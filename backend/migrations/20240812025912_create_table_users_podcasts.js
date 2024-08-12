@@ -4,9 +4,8 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('users_podcasts', table => {
-        table.integer('user_id').primary().notNullable()
-        table.integer('podcast_id').primary().notNullable()
-        table.boolean('own').notNullable()
+        table.integer('userId').unsigned().primary().notNullable()
+        table.integer('podcastId').unsigned().primary().notNullable()
         table.boolean('like')
     })
 };

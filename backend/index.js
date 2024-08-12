@@ -7,8 +7,9 @@ const PORT = 8888
 app.db = db
 
 consign()
-    .then('./app/middlewares/middlewares.js')
-    .then('./app/controllers')
+    .then('./middlewares/middlewares.js')
+    .then('./config')
+    .then('./controllers')
     .then('./routes/routes.js')
     .into(app)
 
