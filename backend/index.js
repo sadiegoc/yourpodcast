@@ -3,7 +3,7 @@ const consign = require('consign')
 const cors = require('cors')
 const db = require('./config/database')
 
-const PORT = 5500
+const PORT = 8888
 app.db = db
 
 consign()

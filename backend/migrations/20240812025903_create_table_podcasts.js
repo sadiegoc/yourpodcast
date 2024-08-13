@@ -9,7 +9,7 @@ exports.up = function(knex) {
         table.string('description')
         table.date('published').notNullable()
         table.string('audioPath').notNullable().unique()
-        table.string('thumbPath').notNullable()
+        table.string('thumbPath').notNullable().unique()
         
     })
 };
