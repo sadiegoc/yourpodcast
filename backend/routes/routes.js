@@ -11,9 +11,11 @@ module.exports = app => {
     //     .delete(app.app.controllers.user.remove)
 
     app.route('/upload')
-        .post(upload.fields([
-            { name: 'mediaFile' },
-            { name: 'imageFile' }
-        ]),
-        app.controllers.podcastsController.save)
+        .post(
+            upload.fields([
+                { name: 'mediaFile' },
+                { name: 'imageFile' }
+            ]),
+            app.controllers.podcastsController.save
+        )
 }
