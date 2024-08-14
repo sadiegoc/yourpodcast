@@ -1,2 +1,4 @@
 .env
 node_modules/
+storage/podcasts/images/*
+storage/podcasts/medias/*
