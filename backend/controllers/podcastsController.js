@@ -9,7 +9,7 @@ module.exports = app => {
         const podcast = {
             ...req.body,
             audioPath: req.files.mediaFile[0].filename,
-            thumbPath: req.files.imageFile[0].filename,
+            thumbPath: req.files.imageFile[0].filename
         }
 
         try {
@@ -21,7 +21,7 @@ module.exports = app => {
         app.db('podcasts')
             .insert(podcast)
             .then(_ => res.status(204).send())
-            .catch(err => res.status(500).send())
+            .catch(err => res.status(500).send(err))
     }
 
     return { save }

@@ -50,11 +50,11 @@
       .then(response => response.json())
       .then(result => {
         console.log('Success:', result);
-        alert('Upload realizado com sucesso!');
+        console.log('Upload realizado com sucesso!');
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('Erro ao fazer upload dos arquivos.');
+        console.log('Erro ao fazer upload dos arquivos.');
       });
     });
   </script>
