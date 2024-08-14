@@ -5,12 +5,12 @@ module.exports = app => {
         .get(app.controllers.userController.get)
         .post(app.controllers.userController.save)
 
-    app.route('/users/:id')
-        .put(app.controllers.userController.save)
-        .get(app.controllers.userController.getById)
+    // app.route('/users/:id')
+        // .put(app.controllers.userController.save)
+        // .get(app.controllers.userController.getById)
     //     .delete(app.app.controllers.user.remove)
 
-    app.route('/upload')
+    app.route('/podcasts')
         .post(
             upload.fields([
                 { name: 'mediaFile' },
@@ -18,4 +18,5 @@ module.exports = app => {
             ]),
             app.controllers.podcastsController.save
         )
+        .get(app.controllers.podcastsController.get)
 }

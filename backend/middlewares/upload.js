@@ -2,8 +2,8 @@ const multer = require('multer')
 const path = require('path')
 
 // caminho de armazenamento de mídias
-const mediaDir = './storage/podcasts/medias/'
-const imageDir = './storage/podcasts/images/'
+const mediaDir = '../storage/podcasts/medias/'
+const imageDir = '../storage/podcasts/images/'
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

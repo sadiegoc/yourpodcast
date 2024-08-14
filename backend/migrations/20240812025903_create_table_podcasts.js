@@ -7,10 +7,10 @@ exports.up = function(knex) {
         table.increments('id').primary()
         table.string('title').notNullable()
         table.string('description')
-        table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
+        table.timestamp('createdAt').notNullable().defaultTo(knex.fn.now())
         table.string('audioPath').notNullable().unique()
         table.string('thumbPath').notNullable().unique()
-        
+        table.integer('userId').unsigned().references('id').inTable('users').notNullable()
     })
 };
 

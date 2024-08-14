@@ -1,4 +1,4 @@
-// const path = require('path')
+const fs = require('fs').promises
 
 module.exports = app => {
     const { existsOrError, notExistsOrError } = app.controllers.validation
@@ -14,6 +14,7 @@ module.exports = app => {
 
         try {
             existsOrError(podcast.title, 'Título não informado')
+            existsOrError(podcast.userId, 'Usuário não informado')
         } catch (err) {
             return res.status(400).send(err)
         }
@@ -24,10 +25,11 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    const get = (req, res) => {
+    const get = async (req, res) => {
         app.db('podcasts')
-            .select('title', 'description', 'created_at', 'thumbPath')
-            .then(podcasts => res.json(podcasts))
+            .join('users', 'podcasts.userId', '=', 'users.id')
+            .select('podcasts.*', 'users.name as userName')
+            .then(podcasts => res.status(200).json(podcasts))
             .catch(err => res.status(500).send(err))
     }
 
