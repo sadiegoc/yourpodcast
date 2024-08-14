@@ -24,5 +24,12 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    return { save }
+    const get = (req, res) => {
+        app.db('podcasts')
+            .select('title', 'description', 'created_at', 'thumbPath')
+            .then(podcasts => res.json(podcasts))
+            .catch(err => res.status(500).send(err))
+    }
+
+    return { save, get }
 }
