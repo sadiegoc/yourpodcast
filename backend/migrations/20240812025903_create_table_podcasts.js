@@ -7,7 +7,7 @@ exports.up = function(knex) {
         table.increments('id').primary()
         table.string('title').notNullable()
         table.string('description')
-        table.date('published').notNullable()
+        table.timestamp('created_at').notNullable().defaultTo(knex.fn.now())
         table.string('audioPath').notNullable().unique()
         table.string('thumbPath').notNullable().unique()
         

@@ -8,8 +8,18 @@
 <body>
   <h1>Envio de Arquivos</h1>
   <form id="uploadForm">
-    <input type="file" id="mediaFile" name="mediaFile" accept="audio/*,video/*" required>
+    <label for="title">Título:</label>
+    <input type="text" id="title" name="title" required>
+    <br>
+    <label for="description">Descrição:</label>
+    <textarea id="description" name="description" required></textarea>
+    <br>
+    <label for="mediaFile">Escolha um arquivo de áudio:</label>
+    <input type="file" id="mediaFile" name="mediaFile" accept="audio/*" required>
+    <br>
+    <label for="imageFile">Escolha uma imagem:</label>
     <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+    <br>
     <button type="submit">Enviar</button>
   </form>
 
@@ -20,6 +30,11 @@
       const formData = new FormData();
       const mediaFile = document.getElementById('mediaFile').files[0];
       const imageFile = document.getElementById('imageFile').files[0];
+      const title = document.getElementById('title').value
+      const description = document.getElementById('description').value
+
+      formData.append('title', title)
+      formData.append('description', description)
 
       if (mediaFile) {
         formData.append('mediaFile', mediaFile);
@@ -28,7 +43,7 @@
         formData.append('imageFile', imageFile);
       }
 
-      fetch('/upload', {
+      fetch('http://localhost:8888/upload', {
         method: 'POST',
         body: formData
       })

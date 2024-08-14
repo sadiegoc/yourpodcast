@@ -1,6 +1,5 @@
 const app = require('express')()
 const consign = require('consign')
-const cors = require('cors')
 const db = require('./config/database')
 
 const PORT = 8888
