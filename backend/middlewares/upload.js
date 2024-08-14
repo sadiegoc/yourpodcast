@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
             cb(null, imageDir)
         } else {
             // retorna um erro caso não seja nenhum desses casos
-            cb(new Error('Campo de arquivo não reconhecido'))
+            cb(new Error('Campo de arquivo não reconhecido'), false)
         }
     },
     filename: (req, file, cb) => {
@@ -25,8 +25,34 @@ const storage = multer.diskStorage({
     }
 })
 
+// filtragem do tipo de arquivo
+const fileFilter = (req, file, cb) => {
+    const fileTypes = { // tipos permitidos
+        'audio/mpeg': 'audio',
+        'audio/wav': 'audio',
+        'image/jpeg': 'image',
+        'image/png': 'image'
+    }
+
+    if (fileTypes[file.mimetype]) {
+        cb(null, true)
+    } else {
+        cb(new Error('Tipo de arquivo não permitido.'), false)
+    }
+}
+
+// limite de tamanho
+// 300MB para arquivos de áudio
+// 10MB para a thumbnail
+const limits = (req, file, cb) => {
+    const mb = 1024 * 1024 // 1024bytes * 1024bytes = 1024bytes * 1kb = 1mb
+    if (file.fieldname === 'mediaFile') cb(null, { fileSize: 300 * mb })
+    else if (file.fieldname === 'imageFile') cb(null, { fileSize: 10 * mb })
+    else cb(new Error('Campo de arquivo não reconhecido'), false)
+}
+
 // inicializamos nosso objeto multer
-const upload = multer({ storage })
+const upload = multer({ storage, fileFilter, limits })
 
 // exportamos para as rotas
 module.exports = { upload }
