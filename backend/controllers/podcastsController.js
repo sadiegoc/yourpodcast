@@ -5,12 +5,14 @@ module.exports = app => {
 
     const save = (req, res, next) => {
         if (!req.files) res.status(400).send('Arquivos não informados!')
-
+            
         const podcast = {
             ...req.body,
             audioPath: req.files.mediaFile[0].filename,
             thumbPath: req.files.imageFile[0].filename
         }
+
+        if (req.params.id) podcast.id = req,params.id
 
         try {
             existsOrError(podcast.title, 'Título não informado')
@@ -33,5 +35,46 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    return { save, get }
+    const update = (req, res, next) => {
+        if (!req.params.id) res.status(400).send('Por favor, informe um podcast!')
+
+        const podcast = { ...req.body }
+        const id = req.params.id
+
+        try {
+            existsOrError(podcast.title, 'Título não informado')
+        } catch (err) {
+            return res.status(400).send(err)
+        }
+
+        app.db('podcasts')
+            .update(podcast)
+            .where({ id })
+            .then(_ => res.status(204).send())
+            .catch(err => res.status(500).send(err))
+    }
+
+    const remove = async (req, res) => {
+        try {
+            existsOrError(req.params.id, 'Podcast não informado')
+
+            const podcastFromDB = await app.db('podcasts')
+                .select('thumbPath', 'audioPath')
+                .where({ id: req.params.id }).first()
+            
+            await fs.unlink('../storage/podcasts/images/' + podcastFromDB.thumbPath)
+            await fs.unlink('../storage/podcasts/medias/' + podcastFromDB.audioPath)
+
+            const rowsDeleted = await app.db('podcasts')
+                .where({ id: req.params.id }).del()
+            existsOrError(rowsDeleted, 'Podcast não encontrado')
+
+            res.status(204).send()
+        } catch (err) {
+            console.log(err)
+            res.status(400).send(err)
+        }
+    }
+
+    return { save, get, update, remove }
 }

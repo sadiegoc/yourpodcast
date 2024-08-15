@@ -6,6 +6,7 @@ const PORT = 8888
 app.db = db
 
 consign()
+    .include('./middlewares/passport.js')
     .then('./middlewares/middlewares.js')
     .then('./controllers/validation.js')
     .then('./controllers')
