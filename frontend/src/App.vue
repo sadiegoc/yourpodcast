@@ -20,6 +20,14 @@ export default {
 <style>
   :root {
     --header-height: 60px;
+
+    --dark-hard: #1c1c1c;
+    --dark-soft: #2c2c2c;
+    --dark-hover: rgba(255, 255, 255, 0.2);
+
+    --light-hard: white;
+    --light-soft: #ddd;
+    --light-hover: rgba(0, 0, 0, 0.2);
   }
 
   @font-face {
