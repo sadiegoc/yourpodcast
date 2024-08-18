@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
     state: {
         isMenuVisible: false,
-        themeDark: false
+        themeDark: true
     },
     mutations: {
         toggleMenu (state, isVisible) {

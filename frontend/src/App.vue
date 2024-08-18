@@ -28,6 +28,8 @@ export default {
     --light-hard: white;
     --light-soft: #ddd;
     --light-hover: rgba(0, 0, 0, 0.2);
+
+    --border-radius: 5px;
   }
 
   @font-face {

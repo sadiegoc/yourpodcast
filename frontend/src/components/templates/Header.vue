@@ -39,13 +39,9 @@
                                     Logout
                                 </a>
                                 <a @click="toggleTheme()">
-                                    <i class="sun" v-if="this.themeDark">
-                                        <img src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
-                                    </i>
-                                    <i class="moon" v-if="!this.themeDark">
-                                        <img src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
-                                    </i>
-                                    Light
+                                    <img v-if="this.themeDark" src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
+                                    <img v-if="!this.themeDark" src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
+                                    {{ this.themeDark ? 'Light' : 'Dark' }}
                                 </a>
                             </div>
                         </div>
@@ -179,7 +175,7 @@ export default {
 
     .search {
         padding: 10px 8px; margin: 0 auto;
-        border-radius: 5px;
+        border-radius: var(--border-radius);
         max-width: 400px;
         
         display: flex; align-items: center;
@@ -231,7 +227,7 @@ export default {
     }
 
     .user-button img {
-        border-radius: 5px;
+        border-radius: var(--border-radius);
     }
 
 
@@ -249,17 +245,17 @@ export default {
         min-width: 170px;
         padding: 10px;
         display: none;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: var(--border-radius);
+        border-bottom-right-radius: var(--border-radius);
     }
 
     .user-dropdown-content a {
         padding: 10px;
-        border-radius: 5px;
+        border-radius: var(--border-radius);
     }
-
-
-    .user-dropdown-content a i {
+    
+    
+    .user-dropdown-content a i, .user-dropdown-content a img {
         margin-right: 5px;
     }
     
@@ -270,6 +266,7 @@ export default {
 
     .dropdown-menu a {
         text-decoration: none; cursor: pointer;
+        display: flex; align-items: center;
     }
 
     @media (max-width: 640px) {
