@@ -29,7 +29,7 @@ export default {
     --light-soft: #ddd;
     --light-hover: rgba(0, 0, 0, 0.2);
 
-    --border-radius: 5px;
+    --border-radius: 8px;
   }
 
   @font-face {

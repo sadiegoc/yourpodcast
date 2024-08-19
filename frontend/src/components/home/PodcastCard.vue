@@ -17,7 +17,10 @@
                 </div>
             </div>
             <div class="footer">
-                <span>
+                <span class="views">
+                    15k views
+                </span>
+                <span class="time">
                     01:54:56
                 </span>
             </div>
@@ -34,50 +37,43 @@ export default {
 </script>
 
 <style scoped>
+.podcast-card.dark:hover { background-color: var(--dark-soft); }
+.podcast-card:hover { background-color: var(--light-soft); }
+
 .podcast-card.dark .title,
-.podcast-card.dark .footer {
-    color: var(--light-hard);
-}
+.podcast-card.dark .footer { color: var(--light-hard); }
 
 .podcast-card.dark .info a,
-.podcast-card.dark .info p {
-    color: #999;
-    text-decoration: none;
-}
+.podcast-card.dark .info p { color: #999; text-decoration: none; }
 
 .podcast-card .title,
-.podcast-card .footer {
-    color: var(--dark-hard);
-}
+.podcast-card .footer { color: var(--dark-hard); }
 
 .podcast-card .info a,
-.podcast-card .info p {
-    color: #888;
-    text-decoration: none;
-}
+.podcast-card .info p { color: #555; text-decoration: none; }
 
 .podcast-card {
     width: 350px;
     display: flex; flex-direction: column;
-    cursor: pointer;
+    cursor: pointer; padding: 10px;
+    border-radius: var(--border-radius);
 }
 
-.thumbnail {
+.thumbnail,
+.thumbnail img {
     margin: 0; padding: 0;
     width: 100%; height: auto;
-}
-
-.thumbnail img {
-    width: 100%;
+    border-radius: var(--border-radius);
 }
 
 .body {
     display: flex; flex-direction: column;
-    padding: 5px; margin: 0;
+    padding: 0; margin: 0;
 }
 
 .body .title {
-    margin: 0; padding: 0;
+    margin: 0; padding: 8px 0;
+    font-size: 0.9rem;
 }
 
 .channel {
@@ -89,19 +85,23 @@ export default {
 }
 
 .info {
-    margin-left: 5px;
+    margin-left: 8px;
 }
 
-.info h2, .info p {
-    margin: 0; padding: 0;
+.info h2 {
+    font-weight: 900;
 }
 
+.info h2,
 .info p {
-    font-size: 0.8rem;
+    margin: 0; padding: 0;
+    font-size: 0.9rem;
 }
 
 .footer {
-    display: flex; justify-content: end;
+    display: flex; justify-content: space-between;
+    border-top: 1px dashed #999;
+    margin: 6px 0; padding: 6px 0;
 }
 
 .footer span {
