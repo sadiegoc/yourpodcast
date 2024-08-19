@@ -29,6 +29,9 @@ export default {
     --light-soft: #ddd;
     --light-hover: rgba(0, 0, 0, 0.2);
 
+    --theme: #FF9F1C;
+    --theme-contrast: #E08300;
+
     --border-radius: 8px;
   }
 

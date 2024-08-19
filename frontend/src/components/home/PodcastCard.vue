@@ -4,16 +4,16 @@
             <img src="@/assets/imgs/thumbnail.jpg" alt="Thumbnail">
         </div>
         <div class="body">
-            <h1 class="title">Um titulo qualquer</h1>
+            <h1 class="title">#33 CAT CAST - GM Magnus Carlsen and GM Supi</h1>
             <div class="channel">
                 <router-link to="#">
                     <img src="../../../../storage/profiles/imgs/default.jpg" alt="Logo">
                 </router-link>
                 <div class="info">
                     <router-link to="#">
-                        <h2>Channel name</h2>
+                        <h2>Cat Cast</h2>
                     </router-link>
-                    <p>time</p>
+                    <p>5 hours ago</p>
                 </div>
             </div>
             <div class="footer">
@@ -73,7 +73,7 @@ export default {
 
 .body .title {
     margin: 0; padding: 8px 0;
-    font-size: 0.9rem;
+    font-size: 0.9rem; word-break: break-all;
 }
 
 .channel {
@@ -101,10 +101,16 @@ export default {
 .footer {
     display: flex; justify-content: space-between;
     border-top: 1px dashed #999;
-    margin: 6px 0; padding: 6px 0;
+    margin: 6px 0 0 0; padding: 6px 0 0 0;
 }
 
 .footer span {
     font-size: 0.9rem;
+}
+
+@media (max-width: 400px) {
+    .podcast-card {
+        width: 100%;
+    }
 }
 </style>

@@ -25,8 +25,8 @@
                     <div class="user-dropdown" :class="{ dark: this.themeDark }">
                         <div class="user-button">
                             <i :class="{ dark: this.themeDark }" class="fa fa-angle-down"></i>
-                            <span>Username</span>
-                            <img src="../../../../storage/profiles/imgs/default.jpg" alt="Profile" width="40px">
+                            <span v-if="logged">Username</span>
+                            <img v-if="logged" src="../../../../storage/profiles/imgs/default.jpg" alt="Profile" width="40px">
                         </div>
                         <div class="user-dropdown-content">
                             <div class="dropdown-menu">
@@ -34,7 +34,7 @@
                                     <i :class="{ dark: this.themeDark }" class="fa fa-home"></i>
                                     Home
                                 </router-link>
-                                <a href>
+                                <a href v-if="logged">
                                     <i :class="{ dark: this.themeDark }" class="fa fa-sign-out"></i>
                                     Logout
                                 </a>
@@ -43,6 +43,10 @@
                                     <img v-if="!this.themeDark" src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
                                     {{ this.themeDark ? 'Light' : 'Dark' }}
                                 </a>
+                                <router-link v-if="!logged" class="btn-auth" to="/auth">
+                                    <i class="fa fa-sign-out" :class="{ dark: this.themeDark }"></i>
+                                    Login / Sign Up
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -55,6 +59,11 @@
 <script>
 export default {
     name: 'HeaderTemp',
+    data () {
+        return {
+            logged: false
+        }
+    },
     methods: {
         toggleMenu () {
             this.$store.commit('toggleMenu')
@@ -87,9 +96,6 @@ export default {
 
     .left .toggle-menu.dark i { color: var(--light-hard); }
     .left .toggle-menu i { color: var(--dark-hard); }
-    
-    .left .brand.dark { color: var(--light-hard);; }
-    .left .brand { color: var(--dark-hard); }
     
     .search.dark { background-color: var(--dark-soft); }
     .search { background-color: var(--light-soft); }
@@ -165,6 +171,11 @@ export default {
         text-transform: uppercase;
         font-size: 0.6rem;
         cursor: pointer;
+        color: var(--theme);
+    }
+
+    .left .brand:hover {
+        color: var(--theme-contrast);
     }
 
     /* CENTER CONFIGS */
@@ -185,7 +196,7 @@ export default {
         border: none; outline: none;
         background: transparent; border-radius: 0;
 
-        margin: 0; padding: 0;
+        margin: 0; padding: 0 0 0 5px;
         width: 100%;
 
         font-size: 0.9rem;
