@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { baseUrl, userKey } from '@/config/global';
-import axios from 'axios';
+// import { baseUrl, userKey } from '@/config/global';
+import auth from '@/services/auth';
 
 export default {
     name: 'AuthPage',
@@ -34,20 +34,21 @@ export default {
         }
     },
     methods: {
-        signin () {
-            axios.post(`${baseUrl}/signin`, this.user)
+        async signin () {
+            await auth.login(this.user)
                 .then(res => {
-                    this.$store.commit('setUser', res.data)
-                    localStorage.setItem(userKey, JSON.stringify(res.data))
-                    this.$router.push({ name: 'home' })
+                    console.log(res.data)
+                    // this.$store.commit('setUser', res.data)
+                    // localStorage.setItem(userKey, JSON.stringify(res.data))
+                    // this.$router.push({ name: 'home' })
                 })
                 .catch(err => console.log(err))
         },
-        signup () {
-            axios.post(`${baseUrl}/signup`, this.user)
+        async signup () {
+            await auth.register(this.user)
                 .then(() => {
                     this.user = {}
-                    this.$router.push({ path: '/auth' })
+                    // this.$router.push({ path: '/auth' })
                     this.showSignup = false
                 })
                 .catch(err => console.log(err))
