@@ -10,8 +10,8 @@
             <input type="password" placeholder="Password" v-model="user.password">
             <input v-if="showSignup" type="password" placeholder="Confirm password" v-model="user.confirmPassword">
 
-            <button v-if="showSignup" @click="signup">Sign Up</button>
-            <button v-else @click="signin">Login</button>
+            <button v-if="showSignup" @click.prevent="signup">Sign Up</button>
+            <button v-else @click.prevent="signin">Login</button>
 
             <a href @click.prevent="showSignup = !showSignup">
                 <span v-if="showSignup">Already have a registration? Login</span>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import { baseUrl, userKey } from '@/config/global';
+import { userKey } from '@/config/global';
 import auth from '@/services/auth';
 
 export default {
@@ -34,21 +34,20 @@ export default {
         }
     },
     methods: {
-        async signin () {
-            await auth.login(this.user)
+        signin () {
+            auth.login(this.user)
                 .then(res => {
-                    console.log(res.data)
-                    // this.$store.commit('setUser', res.data)
-                    // localStorage.setItem(userKey, JSON.stringify(res.data))
-                    // this.$router.push({ name: 'home' })
+                    this.$store.commit('setUser', res.data)
+                    localStorage.setItem(userKey, JSON.stringify(res.data))
+                    this.$router.push({ name: 'home' })
                 })
                 .catch(err => console.log(err))
         },
-        async signup () {
-            await auth.register(this.user)
+        signup () {
+            auth.register(this.user)
                 .then(() => {
                     this.user = {}
-                    // this.$router.push({ path: '/auth' })
+                    this.$router.push({ path: '/auth' })
                     this.showSignup = false
                 })
                 .catch(err => console.log(err))
