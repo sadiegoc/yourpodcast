@@ -21,7 +21,7 @@ export default {
   :root {
     --header-height: 60px;
 
-    --dark-hard: #1c1c1c;
+    --dark-hard: #181818;
     --dark-soft: #2c2c2c;
     --dark-hover: rgba(255, 255, 255, 0.2);
 

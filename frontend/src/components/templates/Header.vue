@@ -24,7 +24,8 @@
                     </button>
                     <div class="user-dropdown" :class="{ dark: this.themeDark }">
                         <div class="user-button">
-                            <i class="fa fa-angle-down"></i>
+                            <i v-if="!user" class="fa fa-bars"></i>
+                            <i v-if="user" class="fa fa-angle-down"></i>
                             <span v-if="user">{{ user.name }}</span>
                             <img v-if="user" :src="user.profilePath" alt="Profile" width="40px">
                         </div>
@@ -34,15 +35,21 @@
                                     <i class="fa fa-home"></i>
                                     Home
                                 </router-link>
-                                <router-link to="/profile" v-if="user">
-                                    <i class="fa fa-user"></i>
-                                    Profile
-                                </router-link>
                                 <a @click="toggleTheme()">
                                     <img v-if="this.themeDark" src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
                                     <img v-else src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
                                     {{ this.themeDark ? 'Light' : 'Dark' }}
                                 </a>
+                                <hr v-if="user">
+                                <router-link to="/profile" v-if="user">
+                                    <i class="fa fa-user"></i>
+                                    Profile
+                                </router-link>
+                                <router-link to="/upload" v-if="user">
+                                    <i class="fa fa-upload"></i>
+                                    Upload
+                                </router-link>
+                                <hr>
                                 <a href @click.prevent="logout()" v-if="user">
                                     <i class="fa fa-sign-out"></i>
                                     Logout
@@ -102,8 +109,10 @@ export default {
     .left .toggle-menu.dark i { color: var(--light-hard); }
     .left .toggle-menu i { color: var(--dark-hard); }
     
-    .search.dark { background-color: var(--dark-soft); }
-    .search { background-color: var(--light-soft); }
+    .search.dark,
+    .user-dropdown.dark hr { background-color: var(--dark-soft); }
+    .search,
+    .user-dropdown hr { background-color: var(--light-soft); }
     
     .search.dark:hover { background-color: var(--dark-hover); }
     .search:hover { background-color: var(--light-hover); }
@@ -120,8 +129,8 @@ export default {
     .user-dropdown.dark .user-button { color: var(--light-hard); }
     .user-dropdown .user-button { color: var(--dark-hard); }
     
-    .user-dropdown.dark .user-dropdown-content { background-color: var(--dark-hard); }
-    .user-dropdown .user-dropdown-content { background-color: var(--light-hard); }
+    .user-dropdown.dark .user-dropdown-content { background-color: var(--dark-hard); border-color: var(--dark-soft); }
+    .user-dropdown .user-dropdown-content { background-color: var(--light-hard); border-color: var(--light-soft); }
     
     .user-dropdown.dark .user-dropdown-content a { background-color: var(--dark-hard); }
     .user-dropdown .user-dropdown-content a { background-color: var(--light-hard); }
@@ -131,6 +140,7 @@ export default {
     
     .user-dropdown.dark .dropdown-menu a { color: var(--light-hard); }
     .user-dropdown .dropdown-menu a { color: var(--dark-hard); }
+
     *.dark i { color: var(--light-hard); }
     i { color: var(--dark-hard); }
 
@@ -263,6 +273,9 @@ export default {
         display: none;
         border-bottom-left-radius: var(--border-radius);
         border-bottom-right-radius: var(--border-radius);
+        border-left: 2px solid;
+        border-bottom: 2px solid;
+        border-right: 2px solid;
     }
 
     .user-dropdown-content a {
@@ -285,8 +298,14 @@ export default {
         display: flex; align-items: center;
     }
 
+    .dropdown-menu hr {
+        border: 0;
+        width: 100%;
+        height: 1px;
+    }
+
     @media (max-width: 640px) {
-        .user-button span, .user-button i {
+        .user-button span, .user-button .fa-angle-down {
             display: none;
         }
 
