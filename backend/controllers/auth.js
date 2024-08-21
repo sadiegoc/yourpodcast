@@ -9,7 +9,7 @@ module.exports = app => {
         const user = await app.db('users')
             .where({ email: req.body.email }).first()
 
-        if (!user) return res.status(400).sed('Usuário não encontrado!')
+        if (!user) return res.status(400).send('Usuário ou senha inválidos!')
 
         const isMatch = bcrypt.compareSync(req.body.password, user.password)
         if (!isMatch) return res.status(401).send('Usuário ou senha inválidos!')
@@ -19,7 +19,7 @@ module.exports = app => {
         const payload = {
             id: user.id,
             name: user.name,
-            profilePath: user.profilePath,
+            profilePath: 'http://localhost:8888/images/profile/' + user.profilePath,
             iat: now,
             exp: now + (60 * 60 * 24 * 2)
         }

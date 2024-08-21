@@ -14,37 +14,41 @@
                 </div>
                 <div class="center">
                     <div class="search" :class="{ dark: this.themeDark }">
-                        <button><i :class="{ dark: this.themeDark }" class="fa fa-search"></i></button>
+                        <button><i class="fa fa-search"></i></button>
                         <input type="search" placeholder="search...">
                     </div>
                 </div>
                 <div class="right">
                     <button class="btn-search">
-                        <i :class="{ dark: this.themeDark }" class="fa fa-search"></i>
+                        <i class="fa fa-search"></i>
                     </button>
                     <div class="user-dropdown" :class="{ dark: this.themeDark }">
                         <div class="user-button">
-                            <i :class="{ dark: this.themeDark }" class="fa fa-angle-down"></i>
-                            <span v-if="logged">Username</span>
-                            <img v-if="logged" src="../../../../storage/profiles/imgs/default.jpg" alt="Profile" width="40px">
+                            <i class="fa fa-angle-down"></i>
+                            <span v-if="user">{{ user.name }}</span>
+                            <img v-if="user" :src="user.profilePath" alt="Profile" width="40px">
                         </div>
                         <div class="user-dropdown-content">
                             <div class="dropdown-menu">
                                 <router-link to="/home">
-                                    <i :class="{ dark: this.themeDark }" class="fa fa-home"></i>
+                                    <i class="fa fa-home"></i>
                                     Home
                                 </router-link>
-                                <a href v-if="logged">
-                                    <i :class="{ dark: this.themeDark }" class="fa fa-sign-out"></i>
-                                    Logout
-                                </a>
+                                <router-link to="/profile" v-if="user">
+                                    <i class="fa fa-user"></i>
+                                    Profile
+                                </router-link>
                                 <a @click="toggleTheme()">
                                     <img v-if="this.themeDark" src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
-                                    <img v-if="!this.themeDark" src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
+                                    <img v-else src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
                                     {{ this.themeDark ? 'Light' : 'Dark' }}
                                 </a>
-                                <router-link v-if="!logged" class="btn-auth" to="/auth">
-                                    <i class="fa fa-sign-out" :class="{ dark: this.themeDark }"></i>
+                                <a href @click.prevent="logout()" v-if="user">
+                                    <i class="fa fa-sign-out"></i>
+                                    Logout
+                                </a>
+                                <router-link v-if="!user" class="btn-auth" to="/auth">
+                                    <i class="fa fa-sign-out"></i>
                                     Login / Sign Up
                                 </router-link>
                             </div>
@@ -57,31 +61,32 @@
 </template>
 
 <script>
+import { userKey } from '@/config/global';
+import { mapState } from 'vuex';
+
 export default {
     name: 'HeaderTemp',
-    data () {
-        return {
-            logged: false
-        }
-    },
     methods: {
         toggleMenu () {
             this.$store.commit('toggleMenu')
         },
         toggleTheme () {
             this.$store.commit('toggleTheme')
+        },
+        logout () {
+            localStorage.removeItem(userKey)
+            this.$store.commit('setUser', null)
+            // this.$router.push({ name: 'home' })
         }
     },
     computed: {
+        ...mapState(['user']),
         icon () {
             return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-angle-down"
         },
         themeDark () {
             return this.$store.state.themeDark
         }
-    },
-    mounted () {
-        console.log(localStorage.getItem('theme'))
     }
 }
 </script>
@@ -126,7 +131,7 @@ export default {
     
     .user-dropdown.dark .dropdown-menu a { color: var(--light-hard); }
     .user-dropdown .dropdown-menu a { color: var(--dark-hard); }
-    i.dark { color: var(--light-hard); }
+    *.dark i { color: var(--light-hard); }
     i { color: var(--dark-hard); }
 
     /* GENERAL CONFIGS */

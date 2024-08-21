@@ -13,7 +13,9 @@
             <button v-if="showSignup" @click.prevent="signup">Sign Up</button>
             <button v-else @click.prevent="signin">Login</button>
 
-            <a href @click.prevent="showSignup = !showSignup">
+            <span :class="{ err }" class="resp" v-show="resp">{{ resp }}</span>
+
+            <a href @click.prevent="{ showSignup = !showSignup; resp = null }">
                 <span v-if="showSignup">Already have a registration? Login</span>
                 <span v-else>Don't have a registration? Sign Up</span>
             </a>
@@ -30,27 +32,43 @@ export default {
     data () {
         return {
             showSignup: false,
-            user: {}
+            user: {},
+            resp: null,
+            err: false
         }
     },
     methods: {
         signin () {
-            auth.login(this.user)
-                .then(res => {
-                    this.$store.commit('setUser', res.data)
-                    localStorage.setItem(userKey, JSON.stringify(res.data))
-                    this.$router.push({ name: 'home' })
-                })
-                .catch(err => console.log(err))
+            if (!this.user.email || !this.user.password) {
+                this.resp = "Informe usuário e senha!"
+                this.err = true
+            }
+            else {
+                auth.login(this.user)
+                    .then(res => {
+                        this.$store.commit('setUser', res.data)
+                        localStorage.setItem(userKey, JSON.stringify(res.data))
+                        this.$router.push({ name: 'home' })
+                    })
+                    .catch(err => { this.resp = err.response.data || null; this.err = true })
+            }
         },
         signup () {
-            auth.register(this.user)
-                .then(() => {
-                    this.user = {}
-                    this.$router.push({ path: '/auth' })
-                    this.showSignup = false
-                })
-                .catch(err => console.log(err))
+            if (!this.user.name || !this.user.email || !this.user.password || !this.user.confirmPassword) {
+                this.resp = "Os campos não podem ficar vazios!"
+                this.err = true
+            }
+            else {
+                auth.register(this.user)
+                    .then(() => {
+                        this.user = {}
+                        this.$router.push({ path: '/auth' })
+                        this.showSignup = false
+                        this.resp = "Usuário cadastrado com sucesso."
+                        this.err = false
+                    })
+                    .catch(err => { this.resp = err.response.data || null; this.err = true })
+            }
         }
     },
     computed: {
@@ -128,7 +146,7 @@ export default {
 }
 
 .auth-modal a {
-    margin-top: 35px;
+    margin-top: 15px;
     text-decoration: none;
 }
 
@@ -141,5 +159,17 @@ export default {
         rgba(120,120,120,0.95),
         rgba(120,120,120,0)
     );
+}
+
+.resp.err {
+    font-size: 0.8rem;
+    font-weight: 100; margin-top: 15px;
+    color: brown;
+}
+
+.resp {
+    font-size: 0.8rem;
+    font-weight: 100; margin-top: 15px;
+    color: darkgreen;
 }
 </style>
