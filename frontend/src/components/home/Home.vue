@@ -59,25 +59,24 @@ export default {
 
 <style scoped>
 .home {
-    display: grid; justify-content: space-evenly;
+    display: grid; justify-content: center;
     grid-template-columns: auto;
     gap: 20px;
 }
 
-@media (min-width: 825px) {
+@media (min-width: 760px) {
     .home {
         grid-template-columns: auto auto;
-        gap: 40px;
     }
 }
 
-@media (min-width: 1226px) {
+@media (min-width: 1150px) {
     .home {
         grid-template-columns: auto auto auto;
     }
 }
 
-@media (min-width: 1624px) {
+@media (min-width: 1540px) {
     .home {
         grid-template-columns: auto auto auto auto;
     }

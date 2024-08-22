@@ -15,8 +15,7 @@ export default {
 <style scoped>
     .content {
         grid-area: content;
-        padding: 40px;
-        overflow: auto;
+        overflow: auto; padding: 40px 0;
     }
 
     .content::-webkit-scrollbar {
@@ -32,11 +31,5 @@ export default {
     .content::-webkit-scrollbar-thumb {
         border-radius: 5px;
         background-color: var(--dark-soft);
-    }
-
-    @media (max-width: 825px) {
-        .content {
-            padding: 20px;
-        }
     }
 </style>

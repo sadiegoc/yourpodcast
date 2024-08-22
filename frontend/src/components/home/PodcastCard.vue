@@ -40,7 +40,7 @@ export default {
 
 <style scoped>
 .podcast-card {
-    width: 100%;
+    width: 350px;
     border-radius: var(--border-radius);
 }
 
@@ -96,5 +96,11 @@ export default {
 
 .footer span {
     font-size: 0.9rem;
+}
+
+@media (max-width: 490px) {
+    .podcast-card {
+        width: 100%;
+    }
 }
 </style>

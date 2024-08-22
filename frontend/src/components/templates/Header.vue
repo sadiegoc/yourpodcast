@@ -29,7 +29,7 @@
                             <span v-if="user">{{ user.name }}</span>
                             <img v-if="user" :src="user.profilePath" alt="Profile" width="40px">
                         </div>
-                        <div class="user-dropdown-content bg-hard border-soft" :class="{ dark: themeDark }">
+                        <div class="user-dropdown-content bg-hard border-half" :class="{ dark: themeDark }">
                             <div class="dropdown-menu">
                                 <router-link to="/home">
                                     <i class="fa fa-home"></i>
@@ -102,8 +102,8 @@ export default {
     .search.dark input::-webkit-search-cancel-button { background-image: url(../../assets/imgs/close-white.png); }
     .search input::-webkit-search-cancel-button { background-image: url(../../assets/imgs/close-black.png); }
     
-    .user-dropdown-content.dark a:hover { background-color: var(--dark-hover); }
-    .user-dropdown-content a:hover { background-color: var(--light-hover); }
+    .user-dropdown-content.dark a:hover { background-color: var(--dark-soft); }
+    .user-dropdown-content a:hover { background-color: var(--light-soft); }
 
     /* GENERAL CONFIGS */
 
