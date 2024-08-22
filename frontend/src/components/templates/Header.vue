@@ -1,19 +1,19 @@
 <template>
-    <header class="header" :class="{ dark: this.themeDark }">
+    <header class="header bg-hard" :class="{ dark: themeDark }">
         <div class="navbar">
             <div class="container">
                 <div class="left">
-                    <button class="toggle-menu" :class="{ dark: this.themeDark }" @click="toggleMenu()">
+                    <button class="toggle-menu bg-hover" :class="{ dark: themeDark }" @click="toggleMenu()">
                         <i class="fa" :class="icon"></i>
                     </button>
-                    <router-link to="/" class="brand" :class="{ dark: this.themeDark }">
+                    <router-link to="/" class="brand" :class="{ dark: themeDark }">
                         Your
                         <br>
                         Podcast
                     </router-link>
                 </div>
                 <div class="center">
-                    <div class="search" :class="{ dark: this.themeDark }">
+                    <div class="search bg-soft bg-hover" :class="{ dark: themeDark }">
                         <button><i class="fa fa-search"></i></button>
                         <input type="search" placeholder="search...">
                     </div>
@@ -22,23 +22,23 @@
                     <button class="btn-search">
                         <i class="fa fa-search"></i>
                     </button>
-                    <div class="user-dropdown" :class="{ dark: this.themeDark }">
+                    <div class="user-dropdown bg-hover" :class="{ dark: themeDark }">
                         <div class="user-button">
                             <i v-if="!user" class="fa fa-bars"></i>
                             <i v-if="user" class="fa fa-angle-down"></i>
                             <span v-if="user">{{ user.name }}</span>
                             <img v-if="user" :src="user.profilePath" alt="Profile" width="40px">
                         </div>
-                        <div class="user-dropdown-content">
+                        <div class="user-dropdown-content bg-hard border-soft" :class="{ dark: themeDark }">
                             <div class="dropdown-menu">
                                 <router-link to="/home">
                                     <i class="fa fa-home"></i>
                                     Home
                                 </router-link>
                                 <a @click="toggleTheme()">
-                                    <img v-if="this.themeDark" src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
+                                    <img v-if="themeDark" src="@/assets/imgs/sun.svg" alt="Sun" height="16px">
                                     <img v-else src="@/assets/imgs/moon.svg" alt="Moon" height="16px">
-                                    {{ this.themeDark ? 'Light' : 'Dark' }}
+                                    {{ themeDark ? 'Light' : 'Dark' }}
                                 </a>
                                 <hr v-if="user">
                                 <router-link to="/profile" v-if="user">
@@ -87,12 +87,9 @@ export default {
         }
     },
     computed: {
-        ...mapState(['user']),
+        ...mapState(['user', 'themeDark']),
         icon () {
             return this.$store.state.isMenuVisible ? "fa-angle-left" : "fa-angle-down"
-        },
-        themeDark () {
-            return this.$store.state.themeDark
         }
     }
 }
@@ -100,49 +97,13 @@ export default {
 
 <style scoped>
     /* THEME CONFIGS */
-    .header.dark { background-color: var(--dark-hard); }
-    .header { background-color: var(--light-hard);; }
-
-    .left .toggle-menu.dark:hover { background-color: var(--dark-hover); }
-    .left .toggle-menu:hover { background-color: var(--light-hover) }
-
-    .left .toggle-menu.dark i { color: var(--light-hard); }
-    .left .toggle-menu i { color: var(--dark-hard); }
-    
-    .search.dark,
-    .user-dropdown.dark hr { background-color: var(--dark-soft); }
-    .search,
-    .user-dropdown hr { background-color: var(--light-soft); }
-    
-    .search.dark:hover { background-color: var(--dark-hover); }
-    .search:hover { background-color: var(--light-hover); }
-    
-    .search.dark input { color: var(--light-hard); }
-    .search input { color: var(--dark-hard); }
+    .search input:hover { background: transparent; }
     
     .search.dark input::-webkit-search-cancel-button { background-image: url(../../assets/imgs/close-white.png); }
     .search input::-webkit-search-cancel-button { background-image: url(../../assets/imgs/close-black.png); }
     
-    .user-dropdown.dark:hover { background-color: var(--dark-hover); }
-    .user-dropdown:hover { background-color: var(--light-hover); }
-    
-    .user-dropdown.dark .user-button { color: var(--light-hard); }
-    .user-dropdown .user-button { color: var(--dark-hard); }
-    
-    .user-dropdown.dark .user-dropdown-content { background-color: var(--dark-hard); border-color: var(--dark-soft); }
-    .user-dropdown .user-dropdown-content { background-color: var(--light-hard); border-color: var(--light-soft); }
-    
-    .user-dropdown.dark .user-dropdown-content a { background-color: var(--dark-hard); }
-    .user-dropdown .user-dropdown-content a { background-color: var(--light-hard); }
-    
-    .user-dropdown.dark .user-dropdown-content a:hover { background-color: var(--dark-hover); }
-    .user-dropdown .user-dropdown-content a:hover { background-color: var(--light-hover); }
-    
-    .user-dropdown.dark .dropdown-menu a { color: var(--light-hard); }
-    .user-dropdown .dropdown-menu a { color: var(--dark-hard); }
-
-    *.dark i { color: var(--light-hard); }
-    i { color: var(--dark-hard); }
+    .user-dropdown-content.dark a:hover { background-color: var(--dark-hover); }
+    .user-dropdown-content a:hover { background-color: var(--light-hover); }
 
     /* GENERAL CONFIGS */
 

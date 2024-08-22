@@ -10,8 +10,8 @@
             <input type="password" placeholder="Password" v-model="user.password">
             <input v-if="showSignup" type="password" placeholder="Confirm password" v-model="user.confirmPassword">
 
-            <button v-if="showSignup" @click.prevent="signup">Sign Up</button>
-            <button v-else @click.prevent="signin">Login</button>
+            <button class="btn" v-if="showSignup" @click.prevent="signup">Sign Up</button>
+            <button class="btn" v-else @click.prevent="signin">Login</button>
 
             <span :class="{ err }" class="resp" v-show="resp">{{ resp }}</span>
 
@@ -80,37 +80,17 @@ export default {
 </script>
 
 <style scoped>
-.auth-content.dark .auth-title,
-.auth-content.dark a,
-.auth-content.dark button
-{ color: var(--light-soft); }
-
-.auth-content .auth-title,
-.auth-content a,
-.auth-content button
-{ color: var(--dark-soft); }
-
-.auth-content.dark input { color: var(--light-soft); background-color: var(--dark-soft); }
-.auth-content input { color: var(--dark-soft); background-color: var(--light-soft); }
-
-.auth-content.dark input:hover { background-color: var(--dark-hover); }
-.auth-content input:hover { background-color: var(--light-hover); }
-
 .auth-content {
-    height: 100%;
-    display: flex;
+    height: 100%; width: 100%; display: flex;
     justify-content: center; align-items: center;
 }
 
 .auth-modal {
     width: 350px;
-    padding: 35px;
+    padding: 0; margin: 20px;
     text-align: center;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
 }
 
 .auth-modal .title {
@@ -135,14 +115,7 @@ export default {
 
 .auth-modal button {
     align-self: flex-end;
-    background-color: var(--theme);
-    padding: 10px 25px; margin: auto;
-    border: none; cursor: pointer;
-    border-radius: var(--border-radius);
-}
-
-.auth-modal button:hover {
-    background-color: var(--theme-contrast);
+    margin: auto;
 }
 
 .auth-modal a {
@@ -154,11 +127,6 @@ export default {
     border: 0;
     width: 100%;
     height: 1px;
-    background: linear-gradient(to right,
-        rgba(120,120,120,0),
-        rgba(120,120,120,0.95),
-        rgba(120,120,120,0)
-    );
 }
 
 .resp.err {

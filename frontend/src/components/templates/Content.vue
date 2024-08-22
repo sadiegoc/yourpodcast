@@ -1,5 +1,5 @@
 <template>
-    <div class="content" :class="{ dark: this.themeDark }">
+    <div class="content bg-hard" :class="{ dark: this.themeDark }">
         <router-view></router-view>
     </div>
 </template>
@@ -13,11 +13,9 @@ export default {
 </script>
 
 <style scoped>
-    .content.dark { background-color: var(--dark-hard); }
-    .content { background-color: var(--light-hard); }
     .content {
         grid-area: content;
-        padding: 20px;
+        padding: 40px;
         overflow: auto;
     }
 
@@ -34,5 +32,11 @@ export default {
     .content::-webkit-scrollbar-thumb {
         border-radius: 5px;
         background-color: var(--dark-soft);
+    }
+
+    @media (max-width: 825px) {
+        .content {
+            padding: 20px;
+        }
     }
 </style>

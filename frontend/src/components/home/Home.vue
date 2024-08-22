@@ -61,12 +61,13 @@ export default {
 .home {
     display: grid; justify-content: space-evenly;
     grid-template-columns: auto;
-    gap: 30px;
+    gap: 20px;
 }
 
 @media (min-width: 825px) {
     .home {
         grid-template-columns: auto auto;
+        gap: 40px;
     }
 }
 
