@@ -75,6 +75,10 @@ export default {
         themeDark () {
             return this.$store.state.themeDark
         }
+    },
+    created () {
+        const user = localStorage.getItem(userKey)
+        if (user) return this.$router.push({ name: 'home' })
     }
 }
 </script>

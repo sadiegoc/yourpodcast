@@ -1,6 +1,4 @@
-import Auth from "@/components/auth/Auth.vue";
-import Home from "@/components/home/Home.vue";
-import Profile from "@/components/profile/Profile.vue";
+import { userKey } from "@/config/global.js";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -8,21 +6,38 @@ const routes = [
         path: '/',
         alias: '/home',
         name: 'home',
-        component: Home
+        component: () => import('@/components/home/Home.vue')
     }, {
         path: '/auth',
         name: 'auth',
-        component: Auth
+        component: () => import('@/components/auth/Auth.vue')
     }, {
         path: '/profile',
         name: 'profile',
-        component: Profile
+        component: () => import('@/components/profile/Profile.vue'),
+        meta: { requiresAuth: true }
+    }, {
+        path: '/upload',
+        name: 'upload',
+        component: () => import('@/components/upload/Upload.vue'),
+        meta: { requiresAuth: true }
     }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    const json = localStorage.getItem(userKey)
+
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        const user = JSON.parse(json)
+        user ? next() : next({ path: '/' })
+    } else {
+        next()
+    }
 })
 
 export default router;
