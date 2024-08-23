@@ -1,9 +1,12 @@
-const app = require('express')()
+const express = require('express')
+const app = express()
 const consign = require('consign')
 const db = require('./config/database')
 
 const PORT = 8888
 app.db = db
+
+app.use('/images/profile', express.static('../storage/profiles/imgs/'))
 
 consign()
     .include('./middlewares/passport.js')

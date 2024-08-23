@@ -1,9 +1,7 @@
-const { upload } = require('../middlewares/upload')
-const express = require('express')
+const { uploadProfilePicture } = require('../middlewares/uploadProfilePicture')
+const { uploadPodcast } = require('../middlewares/uploadPodcast')
 
 module.exports = app => {
-    app.use('/images/profile', express.static('../storage/profiles/imgs/'))
-
     app.post('/signup', app.controllers.userController.save)
     app.post('/signin', app.controllers.auth.signin)
     app.post('/validateToken', app.controllers.auth.validateToken)
@@ -11,17 +9,32 @@ module.exports = app => {
     app.route('/users')
         .get(app.controllers.userController.get)
         .post(app.controllers.userController.save)
+        .put(app.controllers.userController.update)
 
-    app.route('/podcasts')
+    app.route('/upload/img/profile')
         .post(
             app.middlewares.passport.authenticate(),
-            upload.fields([{ name: 'mediaFile' }, { name: 'imageFile' }]),
+            uploadProfilePicture.single('profilePicture'),
+            app.controllers.userController.saveProfilePicture
+        )
+
+    app.route('/upload/podcast')
+        .post(
+            app.middlewares.passport.authenticate(),
+            uploadPodcast.fields(['podcastMedia', 'thumbnailImage']),
             app.controllers.podcastsController.save
         )
-        .get(app.controllers.podcastsController.get)
-    
-    app.route('/podcasts/:id')
-        .all(app.middlewares.passport.authenticate())
-        .put(app.controllers.podcastsController.update)
-        .delete(app.controllers.podcastsController.remove)
+
+    // app.route('/podcasts/:id')
+    //     .all(app.middlewares.passport.authenticate())
+    //     .put(app.controllers.podcastsController.update)
+    //     .delete(app.controllers.podcastsController.remove)
+
+    // app.route('/upload/img/thumbnail')
+    //     .post(
+    //         app.middlewares.passport.authenticate(),
+    //         uploadThumbnail.single('thumbnailImage'),
+    //         app.controllers.podcastsController.save
+    //     )
+    //     .get(app.controllers.podcastsController.get)
 }

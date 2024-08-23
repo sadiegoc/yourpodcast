@@ -81,9 +81,9 @@ export default {
             this.$store.commit('toggleTheme')
         },
         logout () {
-            localStorage.removeItem(userKey)
             this.$store.commit('setUser', null)
-            // this.$router.push({ name: 'home' })
+            localStorage.removeItem(userKey)
+            this.$router.push({ name: 'home' })
         }
     },
     computed: {

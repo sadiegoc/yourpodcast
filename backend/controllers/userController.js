@@ -55,6 +55,15 @@ module.exports = app => {
         }
     }
 
+    const update = (req, res) => {
+        const user = { ...req.body }
+    }
+
+    const saveProfilePicture = (req, res, next) => {
+        if (!req.file) res.status(400).send('Arquivo não informado!')
+        else res.status(201).json({ message: req.file })
+    }
+
     // pega todos os usuários
     const get = (req, res) => {
         app.db('users')
@@ -73,5 +82,5 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    return { save, get, getById }
+    return { save, get, getById, saveProfilePicture, update }
 }

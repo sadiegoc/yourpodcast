@@ -1,20 +1,16 @@
 const multer = require('multer')
 const path = require('path')
 
-// caminho de armazenamento de mídias
-const mediaDir = '../storage/podcasts/medias/'
-const imageDir = '../storage/podcasts/images/'
+// caminho de armazenamento de imagens de perfil
+const profileDir = '../storage/profiles/imgs/'
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // se for o arquivo de áudio o caminho é medias/
-        if (file.fieldname === 'mediaFile') {
-            cb(null, mediaDir)
-        // se for o arquivo de imagem o caminho é images/
-        } else if (file.fieldname === 'imageFile') {
-            cb(null, imageDir)
+        // se for um upload de imagem de perfil, o caminho é /profiles/imgs
+        if (file.fieldname === 'profilePicture') {
+            cb(null, profileDir)
+        // retorna um erro caso não seja
         } else {
-            // retorna um erro caso não seja nenhum desses casos
             cb(new Error('Campo de arquivo não reconhecido'), false)
         }
     },
@@ -28,8 +24,6 @@ const storage = multer.diskStorage({
 // filtragem do tipo de arquivo
 const fileFilter = (req, file, cb) => {
     const fileTypes = { // tipos permitidos
-        'audio/mpeg': 'audio',
-        'audio/wav': 'audio',
         'image/jpeg': 'image',
         'image/png': 'image'
     }
@@ -42,17 +36,15 @@ const fileFilter = (req, file, cb) => {
 }
 
 // limite de tamanho
-// 300MB para arquivos de áudio
 // 10MB para a thumbnail
 const limits = (req, file, cb) => {
     const mb = 1024 * 1024 // 1024bytes * 1024bytes = 1024bytes * 1kb = 1mb
-    if (file.fieldname === 'mediaFile') cb(null, { fileSize: 300 * mb })
-    else if (file.fieldname === 'imageFile') cb(null, { fileSize: 10 * mb })
-    else cb(new Error('Campo de arquivo não reconhecido'), false)
+    if (file.fieldname === 'profilePicture') cb(null, { fileSize: 10 * mb })
+    else cb(new Error('Campo de arquivo não reconhecido.'), false)
 }
 
 // inicializamos nosso objeto multer
-const upload = multer({ storage, fileFilter, limits })
+const uploadProfilePicture = multer({ storage, fileFilter, limits })
 
 // exportamos para as rotas
-module.exports = { upload }
+module.exports = { uploadProfilePicture }
