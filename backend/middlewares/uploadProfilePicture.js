@@ -9,9 +9,9 @@ const storage = multer.diskStorage({
         // se for um upload de imagem de perfil, o caminho é /profiles/imgs
         if (file.fieldname === 'profilePicture') {
             cb(null, profileDir)
-        // retorna um erro caso não seja
+        // caso não haja imagem alguma
         } else {
-            cb(new Error('Campo de arquivo não reconhecido'), false)
+            cb(null, false)
         }
     },
     filename: (req, file, cb) => {

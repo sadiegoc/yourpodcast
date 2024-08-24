@@ -6,16 +6,11 @@ module.exports = app => {
     app.post('/signin', app.controllers.auth.signin)
     app.post('/validateToken', app.controllers.auth.validateToken)
 
-    app.route('/users')
-        .get(app.controllers.userController.get)
-        .post(app.controllers.userController.save)
-        .put(app.controllers.userController.update)
-
-    app.route('/upload/img/profile')
-        .post(
+    app.route('/user/:id')
+        .patch(
             app.middlewares.passport.authenticate(),
             uploadProfilePicture.single('profilePicture'),
-            app.controllers.userController.saveProfilePicture
+            app.controllers.userController.update
         )
 
     app.route('/upload/podcast')

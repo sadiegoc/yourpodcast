@@ -34,10 +34,11 @@
                 <input id="input-file" type="file" @change="onFileChange" name="input-file">
             </div>
             <div class="data">
-                <input type="text" class="bg-hover" :value="user.name" :class="{ dark: themeDark }">
+                <input type="text" class="bg-hover" v-model="name" :placeholder="user.name" :class="{ dark: themeDark }">
                 <button class="btn" type="submit" @click="save()">Save</button>
             </div>
         </div>
+        <span class="msg" :class="{ err }">{{ msg }}</span>
 
         <div class="my-podcasts">
             <div class="podcasts-configs" :class="{ dark: themeDark }">
@@ -72,6 +73,8 @@ import { mapState } from 'vuex';
 import PodcastCard from '../home/PodcastCard.vue';
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css'
+import User from '@/services/user';
+import { userKey } from '@/config/global';
 
 export default {
     name: 'ProfilePage',
@@ -79,31 +82,51 @@ export default {
         return {
             image: null,
             croppedImage: null,
-            showBackdrop: false
+            showBackdrop: false,
+            name: "",
+            msg: "",
+            err: false
         }
     },
     components: { PodcastCard, VueCropper },
     computed: mapState(['user', 'themeDark']),
     methods: {
         save () {
-            const croppedImageResize = this.$refs.cropper.getCroppedCanvas({
-                width: 150, height: 150
-            })
-
-            croppedImageResize.toBlob((blob) => {
-                const formData = new FormData();
-                formData.append('profilePicture', blob, 'profile.jpg')
-
-                fetch('http://localhost:8888/upload/img/profile', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${this.user.token}`
-                    },
-                    body: formData
+            if (this.croppedImage && this.name) {
+                const croppedImageResize = this.$refs.cropper.getCroppedCanvas({
+                    width: 150, height: 150
                 })
-                .then(data => console.log('sucesso: ', data))
-                .catch(err => console.log('erro: ', err))
-            })
+    
+                croppedImageResize.toBlob((blob) => {
+                    const formData = new FormData();
+                    formData.append('profilePicture', blob, 'profile.jpg')
+                    formData.append('name', this.name)
+    
+                    User.update(formData, this.user.id, this.user.token)
+                        .then(() => {
+                            this.user.name = this.name
+                            this.user.profilePath = this.croppedImage
+                            localStorage.setItem(userKey, JSON.stringify(this.user))
+                            this.msg = "Usuário atualizado com sucesso."
+                            this.err = false
+                        })
+                        .catch(err => console.log(err))
+                })
+            } else if (this.name) {
+                const formData = new FormData();
+                formData.append('name', this.name)
+                User.update(formData, this.user.id, this.user.token)
+                    .then(() => {
+                        this.user.name = this.name
+                        localStorage.setItem(userKey, JSON.stringify(this.user))
+                        this.msg = "Usuário atualizado com sucesso."
+                        this.err = false
+                    })
+                    .catch(err => console.log(err))
+            } else {
+                this.err = true
+                this.msg = "Nome de usuário não pode ficar vazio."
+            }
         },
         editImg () {
             console.log('edit')
@@ -241,7 +264,7 @@ button {
 .podcasts-configs {
     grid-area: configs;
     border-bottom: 1px dashed;
-    margin: 20px 10px 0 10px;
+    margin: 0 10px;
 
     display: flex; justify-content: space-between;
     align-items: center;
@@ -249,6 +272,15 @@ button {
 
 .podcasts-configs .title {
     font-size: 1.4rem;
+}
+
+.msg {
+    margin: 20px 0;
+    color: darkgreen !important;
+}
+
+.msg.err {
+    color: brown !important;
 }
 
 @media (max-width: 390px) {

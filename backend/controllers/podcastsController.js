@@ -8,11 +8,11 @@ module.exports = app => {
             
         const podcast = {
             ...req.body,
-            audioPath: req.files.mediaFile[0].filename,
-            thumbPath: req.files.imageFile[0].filename
+            audioPath: req.files.podcastMedia[0].filename,
+            thumbPath: req.files.thumbnailImage[0].filename
         }
 
-        if (req.params.id) podcast.id = req,params.id
+        if (req.params.id) podcast.id = req.params.id
 
         try {
             existsOrError(podcast.title, 'Título não informado')

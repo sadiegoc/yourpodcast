@@ -55,13 +55,37 @@ module.exports = app => {
         }
     }
 
-    const update = (req, res) => {
+    // função para atualizar as informações do usuário
+    const update = (req, res, next) => {
+        if (!req.params.id) res.status(400).send('Usuário não informado!')
+        
+        const id = req.params.id
         const user = { ...req.body }
-    }
+        // caso ele não envie imagem de perfil
+        const pictureFilename = req.file ? req.file.filename : null
 
-    const saveProfilePicture = (req, res, next) => {
-        if (!req.file) res.status(400).send('Arquivo não informado!')
-        else res.status(201).json({ message: req.file })
+        try {
+            existsOrError(user.name, 'Nome de usuário não informado!')
+        } catch (err) {
+            return res.status(400).send(err)
+        }
+
+        // caso ele envie imagem de perfil
+        // vamos salvar o nome do arquivo no banco de dados também
+        if (pictureFilename) {
+            app.db('users')
+                .update({ name: user.name, profilePath: pictureFilename })
+                .where({ id })
+                .then(_ => res.status(204).send())
+                .catch(err => res.status(500).send(err))
+        } else {
+            // caso contrário, vamos salvar apenas o nome
+            app.db('users')
+                .update({ name: user.name })
+                .where({ id })
+                .then(_ => res.status(204).send())
+                .catch(err => res.status(500).send(err))
+        }
     }
 
     // pega todos os usuários
@@ -82,5 +106,5 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    return { save, get, getById, saveProfilePicture, update }
+    return { save, get, getById, update }
 }
