@@ -92,7 +92,8 @@ export default {
     computed: mapState(['user', 'themeDark']),
     methods: {
         save () {
-            if (this.croppedImage && this.name) {
+            this.name = this.name || this.user.name
+            if (this.croppedImage) {
                 const croppedImageResize = this.$refs.cropper.getCroppedCanvas({
                     width: 150, height: 150
                 })
@@ -112,7 +113,7 @@ export default {
                         })
                         .catch(err => console.log(err))
                 })
-            } else if (this.name) {
+            } else {
                 const formData = new FormData();
                 formData.append('name', this.name)
                 User.update(formData, this.user.id, this.user.token)
@@ -123,13 +124,7 @@ export default {
                         this.err = false
                     })
                     .catch(err => console.log(err))
-            } else {
-                this.err = true
-                this.msg = "Nome de usuário não pode ficar vazio."
             }
-        },
-        editImg () {
-            console.log('edit')
         },
         onFileChange (e) {
             const file = e.target.files[0]

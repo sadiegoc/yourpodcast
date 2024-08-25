@@ -1,14 +1,12 @@
 const multer = require('multer')
 const path = require('path')
-
-// caminho de armazenamento de imagens de perfil
-const profileDir = '../storage/profiles/imgs/'
+const { pathProfiles } = require('../config/global')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // se for um upload de imagem de perfil, o caminho é /profiles/imgs
         if (file.fieldname === 'profilePicture') {
-            cb(null, profileDir)
+            cb(null, pathProfiles)
         // caso não haja imagem alguma
         } else {
             cb(null, false)

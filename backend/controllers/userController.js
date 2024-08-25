@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs')
+const fs = require('fs').promises
+const { pathProfiles } = require('../config/global')
 
 module.exports = app => {
     // funções úteis de validação de variáveis
@@ -8,6 +10,19 @@ module.exports = app => {
     const encryptPassword = password => {
         const salt = bcrypt.genSaltSync(10)
         return bcrypt.hashSync(password, salt)
+    }
+
+    /*
+        - função para deletar um arquivo
+        - no caso está sendo usado para deletar a imagem de
+        perfil antiga do usuário quando ele a troca para uma nova
+    */
+    const deleteFile = async path => {
+        try {
+            await fs.unlink(path)
+        } catch (err) {
+            throw err
+        }
     }
 
     // função para salvar um usuário novo ou atualizar um já existente
@@ -56,7 +71,7 @@ module.exports = app => {
     }
 
     // função para atualizar as informações do usuário
-    const update = (req, res, next) => {
+    const update = async (req, res, next) => {
         if (!req.params.id) res.status(400).send('Usuário não informado!')
         
         const id = req.params.id
@@ -73,6 +88,12 @@ module.exports = app => {
         // caso ele envie imagem de perfil
         // vamos salvar o nome do arquivo no banco de dados também
         if (pictureFilename) {
+            // procurar o nome da imagem atual e deletar ela do armazenamento
+            const oldProfile = await app.db('users').select('profilePath').where({ id }).first()
+            if (oldProfile !== 'default.jpg')
+                deleteFile(pathProfiles + oldProfile.profilePath)
+
+            // salvar as novas informações no database
             app.db('users')
                 .update({ name: user.name, profilePath: pictureFilename })
                 .where({ id })

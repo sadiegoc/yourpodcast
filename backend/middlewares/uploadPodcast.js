@@ -1,19 +1,16 @@
 const multer = require('multer')
 const path = require('path')
-
-// caminho de armazenamento de mídias
-const mediaDir = '../storage/podcasts/medias/'
-const thumbDir = '../storage/podcasts/images/'
+const { pathThumbnails, pathMedias } = require('../config/global')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // se for o arquivo de áudio o caminho é /podcasts/medias/
         if (file.fieldname === 'podcastMedia') {
-            cb(null, mediaDir)
+            cb(null, pathMedias)
         
         // se for o arquivo de imagem o caminho é /podcasts/images/
         } else if (file.fieldname === 'thumbnailImage') {
-            cb(null, thumbDir)
+            cb(null, pathThumbnails)
         
         // retorna um erro caso não seja nenhum desses casos
         } else {

@@ -1,6 +1,7 @@
 const { authSecret } = require('../.env')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { profilesURL } = require('../config/global')
 
 module.exports = app => {
     const signin = async (req, res) => {
@@ -19,7 +20,7 @@ module.exports = app => {
         const payload = {
             id: user.id,
             name: user.name,
-            profilePath: 'http://localhost:8888/images/profile/' + user.profilePath,
+            profilePath: profilesURL + user.profilePath,
             iat: now,
             exp: now + (60 * 60 * 24 * 2)
         }
